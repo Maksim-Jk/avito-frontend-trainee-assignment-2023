@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import './App.css'
 import Router from './router/Router'
-import Main from './pages/Main'
 
 const App: FC = () => {
 
@@ -9,5 +8,6 @@ const App: FC = () => {
     <Router/>
   )
 }
+
 
 export default App
