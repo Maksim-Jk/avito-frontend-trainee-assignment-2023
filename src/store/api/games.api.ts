@@ -20,7 +20,7 @@ export const gamesApi = createApi({
         }`,
       extraOptions: { maxRetries: 3 },
     }),
-    getGameById: builder.query<IGame[], number>({
+    getGameById: builder.query<IGame, string>({
       query: (id) => `game?id=${id}`,
       extraOptions: { maxRetries: 3 },
     }),
