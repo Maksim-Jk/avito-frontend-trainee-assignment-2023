@@ -1,23 +1,30 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IGame, IGameQuery } from "../../types/games.types";
 
 const API_URL = "https://www.freetogame.com/api/";
 
 export const gamesApi = createApi({
-  reducerPath: "api",
+  reducerPath: "gamesApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
   }),
   endpoints: (builder) => ({
-    getGames: builder.query({
+    getGames: builder.query<IGame[], any>({
       query: () => "games",
+      extraOptions: { maxRetries: 3 },
     }),
-    getGamesSotred: builder.query({
-      query: ({platform, category, sortByby}) => `games?${platform && `platform=${platform}`}${category && `&category=${category}`} ${sortByby && `&sort-by${sortByby}`}`,
+    getGamesSorted: builder.query<IGame[], IGameQuery>({
+      query: ({ platform, category, sortByby }) =>
+        `games?${platform && `platform=${platform}`}${category && `&category=${category}`} ${
+          sortByby && `&sort-by${sortByby}`
+        }`,
+      extraOptions: { maxRetries: 3 },
     }),
-    getGameById: builder.query({
-        query: (id) => `game?id=${id}`,
-      }),
+    getGameById: builder.query<IGame[], number>({
+      query: (id) => `game?id=${id}`,
+      extraOptions: { maxRetries: 3 },
+    }),
   }),
 });
 
-export const {useGetGamesQuery, useGetGamesSotredQuery, useGetGameByIdQuery}= gamesApi
+export const { useGetGamesQuery, useGetGamesSortedQuery, useGetGameByIdQuery } = gamesApi;
