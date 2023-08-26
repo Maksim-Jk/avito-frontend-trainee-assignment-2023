@@ -9,7 +9,7 @@ interface IGameCardProps {
 
 const GameCard: FC<IGameCardProps> = ({ game }) => {
   return (
-    <Link to={`${game.id}`} style={{textDecoration: 'none'}}>
+    <Link to={`/game?id=${game.id}`} style={{textDecoration: 'none'}}>
       <Card
         sx={{
           maxWidth: "350px",

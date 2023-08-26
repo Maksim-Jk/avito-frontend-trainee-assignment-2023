@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { IGameByIdScreenshot } from "../../types/games.types";
 import { Card, CardMedia, Typography, CardContent } from "@mui/material";
 import Slider from "../../components/Slider/Slider";
+import { useSearchParams } from "react-router-dom";
 
 interface IError {
   status: number;
@@ -13,8 +14,11 @@ interface IError {
 
 const GamePage: FC = () => {
   const navigate = useNavigate();
-  const params = useParams();
-  const { data: game, isLoading, isError, error } = useGetGameByIdQuery(params.id || "");
+  const [searchParams] = useSearchParams();
+  const gameId = searchParams.get('id')
+
+  
+  const { data: game, isLoading, isError, error } = useGetGameByIdQuery(gameId || "");
 
   const notFoundMessage = "Данные не найдены";
   const isMinSysReqValid =
