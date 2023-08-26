@@ -15,8 +15,7 @@ interface ISliderProps {
 }
 
 const Slider: FC<ISliderProps> = ({ slides ,...swiperProps}) => {
-  console.log(swiperProps);
-  
+ 
   return (
     <>
       <Swiper

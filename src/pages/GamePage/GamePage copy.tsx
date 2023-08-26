@@ -6,6 +6,8 @@ import { IGame, IGameById, IGameByIdScreenshot } from "../../types/games.types";
 import { Card, CardMedia, Typography, CardContent } from "@mui/material";
 import Slider from "../../components/Slider/Slider";
 import { useSearchParams } from "react-router-dom";
+import { useGameData } from "../../hooks/useGameData";
+import { isGamesData } from "../../utils/setGameToLocalStorage";
 
 interface IError {
   status: number;
@@ -20,67 +22,83 @@ interface ILocalStorageData {
 const GamePage: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const gameId: string = searchParams.get("id") || "";
+  const gameId: string | null = searchParams.get("id");
 
-  function updateGameInLocalStorage(
-    gameArray: ILocalStorageData[],
-    gameId: string,
-    gameData: IGameById
-  ) {
-    if (gameData && gameArray && gameId) {
-      const updatedArray = gameArray.map((game) => {
-        if (game.data.id === +gameId) {
-          return { data: gameData, timestamp: Date.now() };
-        }
-        return game;
-      });
-
-      if (!updatedArray.some((game) => game.data.id === +gameId)) {
-        updatedArray.push({ data: gameData, timestamp: Date.now() });
-      }
-
-      localStorage.setItem("openedGames", JSON.stringify(updatedArray));
-    }
-  }
-
-  const openedGames: ILocalStorageData[] = JSON.parse(localStorage.getItem("openedGames") || "[]");
-  const cachedGameIndex: number | -1 =
-    openedGames.length >= 1 && gameId
-      ? openedGames.findIndex((game) => game.data.id === +gameId)
-      : -1;
-  const cachedGameData: IGameById | null =
-    cachedGameIndex !== -1 ? openedGames[cachedGameIndex].data : null;
-
-  const shouldFetch = 
-    !cachedGameData || Date.now() - openedGames[cachedGameIndex].timestamp >= 5 * 60 * 1000;
-
-  const {
-    data: gameData,
-    isLoading,
-    isError,
-    error,
-  } = useGetGameByIdQuery(gameId || "", {
-    skip: !shouldFetch,
-  });
-
-  const [gameState, setGameState] = useState(cachedGameData || gameData);
+  const [gameData, setGameData] = useState<undefined | IGameById>(undefined);
+  const { hookGameData, isGameCached, isGameInTime, isLocalstorageData } = useGameData(gameId);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (openedGames.length === 0 && gameData) {
-        updateGameInLocalStorage([{ data: gameData, timestamp: Date.now() }], gameId, gameData);
-      } else {
-        const data: IGameById | null = gameData ? gameData : cachedGameData;
-        data && updateGameInLocalStorage(openedGames, gameId, data);
-      }
-      setGameState(gameData || cachedGameData || undefined);
+    console.log(hookGameData);
+
+    if (hookGameData) {
+      setGameData(hookGameData);
     }
-  }, [gameData, cachedGameData]);
+  }, [hookGameData]);
+
+  useEffect(() => {
+    const currentTime = new Date().getTime();
+    const cacheTimer = 5 * 60 * 1000;
+    const localStorageJSON: string | null = localStorage.getItem("cachedGames");
+    const localStorageData: ILocalStorageData[] = localStorageJSON && JSON.parse(localStorageJSON);
+    const setGamesDataFromServerToLocal = () =>
+      localStorage.setItem(
+        "cachedGames",
+        JSON.stringify([{ data: serverData, timestamp: currentTime }])
+      );
+    const addGameToLocalGamesData = () =>
+      localStorage.setItem(
+        "cachedGames",
+        JSON.stringify([...localStorageData, { data: serverData, timestamp: currentTime }])
+      );
+    const isGamesData = isLocalstorageData;
+    const gameData = localStorageData?.find((item) => item.data.id === 1);
+
+    const checkTime = (gameData: any, validation: number): boolean =>
+      currentTime - gameData.timestamp < validation;
+
+    if (serverData && gameId) {
+      setGameData(serverData);
+
+      if (gameData) {
+        const isValidTime = checkTime(gameData, cacheTimer);
+        let res = false;
+        isValidTime ? setGameData(gameData.data) : (res = true);
+        return res;
+      } else {
+        setGamesDataFromServerToLocal();
+      }
+
+      const {
+        data: serverData,
+        isLoading,
+        isError,
+        error,
+      } = useGetGameByIdQuery(gameId || "", {
+        skip: isGameInTime && isGameCached,
+      });
+
+      // if(!isGamesData) {
+      //   setGamesDataFromServerToLocal()
+      // }
+      if (isGamesData && !isGameCached) {
+        addGameToLocalGamesData;
+      }
+      if (!isGameInTime && localStorageData) {
+        const cachedGame: ILocalStorageData | undefined =
+          localStorageData && localStorageData.find((item) => item.data.id === +gameId);
+        if (cachedGame) {
+          cachedGame.timestamp = currentTime;
+        }
+        const newLocalStorageJSON = JSON.stringify([...localStorageData, cachedGame]);
+        localStorage.setItem("cachedGames", newLocalStorageJSON);
+      }
+    }
+  }, []);
 
   const notFoundMessage = "Данные не найдены";
   const isMinSysReqValid =
-    gameState && gameState.minimum_system_requirements
-      ? Object.values(gameState.minimum_system_requirements).every(
+    gameData && gameData.minimum_system_requirements
+      ? Object.values(gameData.minimum_system_requirements).every(
           (value) => value !== null && value !== undefined
         )
       : false;
@@ -94,7 +112,7 @@ const GamePage: FC = () => {
 
       {isLoading
         ? "-----Loading-----"
-        : gameState && (
+        : gameData && (
             <div
               style={{
                 padding: "20px",
@@ -107,7 +125,7 @@ const GamePage: FC = () => {
               }}
             >
               <Slider
-                slides={gameState.screenshots}
+                slides={gameData.screenshots}
                 style={{ borderRadius: "10px", maxWidth: "60%" }}
               />
               <Card
@@ -122,8 +140,8 @@ const GamePage: FC = () => {
               >
                 <CardMedia
                   component="img"
-                  image={gameState.thumbnail}
-                  alt={gameState.title}
+                  image={gameData.thumbnail}
+                  alt={gameData.title}
                   style={{ maxWidth: "100%", marginBottom: "10px" }}
                 />
                 <CardContent>
@@ -131,25 +149,25 @@ const GamePage: FC = () => {
                     sx={{ color: "text.primary", fontSize: "30px", fontWeight: "400" }}
                     variant="h1"
                   >
-                    {gameState.title ? gameState.title : notFoundMessage}
+                    {gameData.title ? gameData.title : notFoundMessage}
                   </Typography>
                   <Typography sx={{ marginTop: "10px" }} variant="subtitle1" color="text.secondary">
-                    Дата релиза: {gameState.release_date ? gameState.release_date : notFoundMessage}
+                    Дата релиза: {gameData.release_date ? gameData.release_date : notFoundMessage}
                   </Typography>
                   <Typography sx={{ marginTop: "5px" }} variant="subtitle1" color="text.secondary">
-                    Издатель: {gameState.publisher ? gameState.publisher : notFoundMessage}
+                    Издатель: {gameData.publisher ? gameData.publisher : notFoundMessage}
                   </Typography>
                   <Typography sx={{ marginTop: "5px" }} variant="subtitle1" color="text.secondary">
-                    Разработчик: {gameState.developer ? gameState.developer : notFoundMessage}
+                    Разработчик: {gameData.developer ? gameData.developer : notFoundMessage}
                   </Typography>
                   <Typography sx={{ marginTop: "5px" }} variant="subtitle1" color="text.secondary">
-                    Жанр: {gameState.genre ? gameState.genre : notFoundMessage}
+                    Жанр: {gameData.genre ? gameData.genre : notFoundMessage}
                   </Typography>
 
                   <h2 style={{ fontSize: "20px", fontWeight: "normal", marginTop: "20px" }}>
                     Минимальные системные требования
                   </h2>
-                  {gameState.minimum_system_requirements && isMinSysReqValid ? (
+                  {gameData.minimum_system_requirements && isMinSysReqValid ? (
                     <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
                       <li style={{ margin: 0 }}>
                         <Typography
@@ -161,8 +179,8 @@ const GamePage: FC = () => {
                           Операционная система:
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary">
-                          {gameState.minimum_system_requirements.os
-                            ? gameState.minimum_system_requirements.os
+                          {gameData.minimum_system_requirements.os
+                            ? gameData.minimum_system_requirements.os
                             : notFoundMessage}
                         </Typography>
                       </li>
@@ -176,8 +194,8 @@ const GamePage: FC = () => {
                           Процессор:
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary">
-                          {gameState.minimum_system_requirements.processor
-                            ? gameState.minimum_system_requirements.processor
+                          {gameData.minimum_system_requirements.processor
+                            ? gameData.minimum_system_requirements.processor
                             : notFoundMessage}
                         </Typography>
                       </li>
@@ -191,8 +209,8 @@ const GamePage: FC = () => {
                           Память:
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary">
-                          {gameState.minimum_system_requirements.memory
-                            ? gameState.minimum_system_requirements.memory
+                          {gameData.minimum_system_requirements.memory
+                            ? gameData.minimum_system_requirements.memory
                             : notFoundMessage}
                         </Typography>
                       </li>
@@ -206,8 +224,8 @@ const GamePage: FC = () => {
                           Графический процессор:
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary">
-                          {gameState.minimum_system_requirements.graphics
-                            ? gameState.minimum_system_requirements.graphics
+                          {gameData.minimum_system_requirements.graphics
+                            ? gameData.minimum_system_requirements.graphics
                             : notFoundMessage}
                         </Typography>
                       </li>
@@ -221,9 +239,9 @@ const GamePage: FC = () => {
                           Хранилище:
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary">
-                          {gameState.minimum_system_requirements.storage &&
-                          gameState.minimum_system_requirements.storage.length > 1
-                            ? gameState.minimum_system_requirements.storage
+                          {gameData.minimum_system_requirements.storage &&
+                          gameData.minimum_system_requirements.storage.length > 1
+                            ? gameData.minimum_system_requirements.storage
                             : notFoundMessage}
                         </Typography>
                       </li>

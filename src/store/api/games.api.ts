@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGame, IGameById, IGameQuery } from "../../types/games.types";
-import { transformData } from "../../helpers/transformData";
+import { transformData } from "../../utils/transformData";
 
 const API_URL = "https://www.freetogame.com/api/";
 
@@ -28,7 +28,7 @@ export const gamesApi = createApi({
         }`,
       extraOptions: { maxRetries: 3 },
     }),
-    getGameById: builder.query<IGameById, string>({
+    getGameById: builder.query<IGameById, string | number>({
       query: (id) => `game?id=${id}`,
       extraOptions: { maxRetries: 3 },
 

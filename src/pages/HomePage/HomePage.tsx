@@ -14,8 +14,8 @@ const HomePage: FC = () => {
       {isLoading && "Загрузка"}
       <ul style={{ display: "flex", gap: "20px", maxWidth: "1200px", flexWrap: "wrap" }}>
         {!isLoading && !isError && data
-          ? data?.slice(0, 100).map((game: IGame) => <GameCard key={game.id} game={game} />)
-          : Array.from({ length: paginationCount }, () => <HomePageSceleton />)}
+          ? data?.slice(0, 100).map((game: IGame) => <GameCard game={game} key={game.id}/>)
+          : Array.from({ length: paginationCount }, (_, i) => <HomePageSceleton key={i}/>)}
       </ul>
     </div>
   );
