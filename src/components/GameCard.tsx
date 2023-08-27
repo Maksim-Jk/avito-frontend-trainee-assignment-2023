@@ -9,51 +9,68 @@ interface IGameCardProps {
 
 const GameCard: FC<IGameCardProps> = ({ game }) => {
   return (
-    <Link to={`/game?id=${game.id}`} style={{textDecoration: 'none'}}>
-      <Card
-        sx={{
-          maxWidth: "350px",
-          height: "350px",
-          borderRadius: "10px",
-          display: "flex",
-          flexDirection: "column",
-          transition: "transform ease .3s",
-          "&:hover": {
-            transform: "scale(1.02)",
-          },
-        }}
-      >
-        <CardMedia sx={{ minWidth: "350px", minHeight: '200px' }} component="img" image={game.thumbnail} />
-        <CardContent
+    <Box
+      sx={{
+        borderRadius: "10px",
+        overflow: "hidden",
+        flex: "auto 1 auto",
+        width: { xs: "100%", sm: "47.9%", md: "31.6%", lg: "32%" },
+        transition: "transform ease .3s",
+        "&:hover": {
+          transform: "scale(1.02)",
+        },
+      }}
+    >
+      <Link to={`/game?id=${game.id}`}>
+        <Card
           sx={{
+            height: "100%",
             display: "flex",
             flexDirection: "column",
-            textAlign: "left",
-            paddingBottom: 0,
-            flex: 1,
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography color="text.primary" variant="h5">
+          <CardMedia
+            sx={{
+              // minHeight: "200px",
+              width: "100%",
+            }}
+            component="img"
+            image={game.thumbnail}
+          />
+
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              textAlign: "left",
+              flex: 1,
+              padding: "24px",
+            }}
+          >
+            <Typography color="text.primary" variant="h5" component="h2">
               {game.title}
             </Typography>
 
-            <Typography sx={{ marginTop: "5px" }} color="text.secondary">
-              {game.release_date}
+            <Typography sx={{ mb: 1.5 }} component="span" color="text.secondary">
+              {game.genre}
             </Typography>
-          </Box>
-          <Typography sx={{ mb: 1.5 }} variant="subtitle2" color="text.secondary">
-            {game.genre}
-          </Typography>
-          <Typography sx={{ marginTop: "auto" }} color="text.secondary">
-            {game.developer}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Link>
-
-    // <li>
-    // </li>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                columnGap: "10px",
+                justifyContent: "space-between",
+                marginTop: "auto",
+                alignItems: "end",
+              }}
+            >
+              <Typography color="text.secondary">{game.developer}</Typography>
+              <Typography color="text.secondary">{game.release_date}</Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      </Link>
+    </Box>
   );
 };
 
