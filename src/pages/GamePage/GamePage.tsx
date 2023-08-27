@@ -1,26 +1,24 @@
-import React, { FC, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { FC, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { useGetGameByIdQuery } from "../../store/api/games.api";
 import Button from "@mui/material/Button";
-import { IGame, IGameById, IGameByIdScreenshot } from "../../types/games.types";
-import { Card, CardMedia, Typography, CardContent } from "@mui/material";
-import Slider from "../../components/Slider/Slider";
+import { IGameById } from "../../types/games.types";
+import { Card, CardMedia, Typography, CardContent, Box } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { updateGamesInLocalStorage } from "../../utils/localStorageUtils";
 import { useLocalStorageGameData } from "../../hooks/useLocalStorageGameData";
+import Slider from "../../components/Slider/Slider";
 
 interface IError {
   status: number;
   status_message: string;
 }
 
-
-
 const GamePage: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const gameId: string = searchParams.get("id") || "";
-  const {openedGames, cachedGameData, shouldFetch} = useLocalStorageGameData(gameId)
+  const { openedGames, cachedGameData, shouldFetch } = useLocalStorageGameData(gameId);
   const notFoundMessage = "Данные не найдены";
 
   const {
@@ -59,29 +57,25 @@ const GamePage: FC = () => {
       {isLoading
         ? "-----Loading-----"
         : gameState && (
-            <div
-              style={{
-                padding: "20px",
+            <Box
+              sx={{
                 fontFamily: "Arial, sans-serif",
-                maxWidth: "1200px",
                 display: "flex",
-                // flexWrap: 'wrap',
+                flexDirection: {  xs: "column-reverse", md: "row" },
                 gap: "20px",
                 alignItems: "start",
+                justifyContent: "space-between",
               }}
             >
-              <Slider
-                slides={gameState.screenshots}
-                style={{ borderRadius: "10px", maxWidth: "60%" , minHeight: '200px'}}
-              />
+              <Slider slides={gameState.screenshots} />
               <Card
-                style={{
+                sx={{
                   textAlign: "left",
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: { xs: 'column',md: "column" },
                   borderRadius: "10px",
-                  maxWidth: "400px",
-                  minWidth: "300px",
+                  width: { xs: '100%', md: '40%'},
+                  minWidth: "400px",
                 }}
               >
                 <CardMedia
@@ -110,9 +104,9 @@ const GamePage: FC = () => {
                     Жанр: {gameState.genre ? gameState.genre : notFoundMessage}
                   </Typography>
 
-                  <h2 style={{ fontSize: "20px", fontWeight: "normal", marginTop: "20px" }}>
+                  <Typography component="h2" sx={{ fontSize: "20px", marginTop: "20px" }}>
                     Минимальные системные требования
-                  </h2>
+                  </Typography>
                   {gameState.minimum_system_requirements && isMinSysReqValid ? (
                     <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
                       <li style={{ margin: 0 }}>
@@ -199,7 +193,7 @@ const GamePage: FC = () => {
                   )}
                 </CardContent>
               </Card>
-            </div>
+            </Box>
           )}
     </div>
   );

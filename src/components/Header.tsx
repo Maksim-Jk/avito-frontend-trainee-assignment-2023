@@ -3,7 +3,7 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <Box mx='20px' boxShadow={'0px 4px 4px rgba(0, 0, 0, 0.25)'} sx={{ flexGrow: 1, borderRadius: '10px', overflow: 'hidden' }}>
+    <Box boxShadow={'0px 4px 4px rgba(0, 0, 0, 0.25)'} sx={{ flexGrow: 1, borderRadius: '10px', overflow: 'hidden' }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton

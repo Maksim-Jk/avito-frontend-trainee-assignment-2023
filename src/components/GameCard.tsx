@@ -14,7 +14,7 @@ const GameCard: FC<IGameCardProps> = ({ game }) => {
         borderRadius: "10px",
         overflow: "hidden",
         flex: "auto 1 auto",
-        width: { xs: "100%", sm: "47.9%", md: "31.6%", lg: "32%" },
+        width: { xs: "100%", sm: "47.5%", md: "31.6%", lg: "32%" },
         transition: "transform ease .3s",
         "&:hover": {
           transform: "scale(1.02)",
@@ -22,22 +22,8 @@ const GameCard: FC<IGameCardProps> = ({ game }) => {
       }}
     >
       <Link to={`/game?id=${game.id}`}>
-        <Card
-          sx={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <CardMedia
-            sx={{
-              // minHeight: "200px",
-              width: "100%",
-            }}
-            component="img"
-            image={game.thumbnail}
-          />
-
+        <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          <CardMedia sx={{ width: "100%" }} component="img" image={game.thumbnail} />
           <CardContent
             sx={{
               display: "flex",
@@ -50,7 +36,6 @@ const GameCard: FC<IGameCardProps> = ({ game }) => {
             <Typography color="text.primary" variant="h5" component="h2">
               {game.title}
             </Typography>
-
             <Typography sx={{ mb: 1.5 }} component="span" color="text.secondary">
               {game.genre}
             </Typography>
