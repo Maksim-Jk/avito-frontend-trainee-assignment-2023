@@ -4,11 +4,16 @@ import { IGame } from "../../types/games.types";
 import GameCard from "../../components/GameCard";
 import TablePagination from "@mui/material/TablePagination";
 import HomePageSceleton from "../../components/HomePageSceleton";
+import { removeOldGamesInLocalStorage } from "../../utils/localStorageUtils";
 
 const HomePage: FC = () => {
   const { isLoading, data, isError } = useGetGamesQuery("");
   const [dataToRender, setDataToRender] = useState<IGame[] | undefined>(data);
   const [paginationCount, setPaginationCount] = useState(10);
+
+  useEffect(()=>{
+    removeOldGamesInLocalStorage()
+  }, [])
   return (
     <div>
       {isLoading && "Загрузка"}

@@ -15,25 +15,27 @@ interface ISliderProps {
 }
 
 const Slider: FC<ISliderProps> = ({ slides ,...swiperProps}) => {
- 
+const [isError, setIsError] = useState(false) 
+
   return (
     <>
-      <Swiper
-        pagination={{
-          type: "progressbar",
-        }}
-        navigation={true}
-        modules={[Pagination, Navigation]}
-        {...swiperProps}
-      >
-        {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <img src={slide.image} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </>
-  );
-};
+
+            <Swiper
+            pagination={{
+              type: "progressbar",
+            }}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+            {...swiperProps}
+          >
+            {slides.map((slide) => (
+              <SwiperSlide key={slide.id} style={{minHeight: '200px', display: 'flex', alignItems: 'center'}}>
+                <img src={slide.image} style={{color: '#000'}} alt="Не удалось получить изображение"/>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+</>
+)}
 
 export default Slider;

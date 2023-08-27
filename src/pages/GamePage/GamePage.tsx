@@ -6,53 +6,22 @@ import { IGame, IGameById, IGameByIdScreenshot } from "../../types/games.types";
 import { Card, CardMedia, Typography, CardContent } from "@mui/material";
 import Slider from "../../components/Slider/Slider";
 import { useSearchParams } from "react-router-dom";
+import { updateGamesInLocalStorage } from "../../utils/localStorageUtils";
+import { useLocalStorageGameData } from "../../hooks/useLocalStorageGameData";
 
 interface IError {
   status: number;
   status_message: string;
 }
 
-interface ILocalStorageData {
-  data: IGameById;
-  timestamp: number;
-}
+
 
 const GamePage: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const gameId: string = searchParams.get("id") || "";
-
-  function updateGameInLocalStorage(
-    gameArray: ILocalStorageData[],
-    gameId: string,
-    gameData: IGameById
-  ) {
-    if (gameData && gameArray && gameId) {
-      const updatedArray = gameArray.map((game) => {
-        if (game.data.id === +gameId) {
-          return { data: gameData, timestamp: Date.now() };
-        }
-        return game;
-      });
-
-      if (!updatedArray.some((game) => game.data.id === +gameId)) {
-        updatedArray.push({ data: gameData, timestamp: Date.now() });
-      }
-
-      localStorage.setItem("openedGames", JSON.stringify(updatedArray));
-    }
-  }
-
-  const openedGames: ILocalStorageData[] = JSON.parse(localStorage.getItem("openedGames") || "[]");
-  const cachedGameIndex: number | -1 =
-    openedGames.length >= 1 && gameId
-      ? openedGames.findIndex((game) => game.data.id === +gameId)
-      : -1;
-  const cachedGameData: IGameById | null =
-    cachedGameIndex !== -1 ? openedGames[cachedGameIndex].data : null;
-
-  const shouldFetch = 
-    !cachedGameData || Date.now() - openedGames[cachedGameIndex].timestamp >= 5 * 60 * 1000;
+  const {openedGames, cachedGameData, shouldFetch} = useLocalStorageGameData(gameId)
+  const notFoundMessage = "Данные не найдены";
 
   const {
     data: gameData,
@@ -68,16 +37,15 @@ const GamePage: FC = () => {
   useEffect(() => {
     if (!isLoading) {
       if (openedGames.length === 0 && gameData) {
-        updateGameInLocalStorage([{ data: gameData, timestamp: Date.now() }], gameId, gameData);
+        updateGamesInLocalStorage([{ data: gameData, timestamp: Date.now() }], gameId, gameData);
       } else {
         const data: IGameById | null = gameData ? gameData : cachedGameData;
-        data && updateGameInLocalStorage(openedGames, gameId, data);
+        data && updateGamesInLocalStorage(openedGames, gameId, data);
       }
       setGameState(gameData || cachedGameData || undefined);
     }
   }, [gameData, cachedGameData]);
 
-  const notFoundMessage = "Данные не найдены";
   const isMinSysReqValid =
     gameState && gameState.minimum_system_requirements
       ? Object.values(gameState.minimum_system_requirements).every(
@@ -108,7 +76,7 @@ const GamePage: FC = () => {
             >
               <Slider
                 slides={gameState.screenshots}
-                style={{ borderRadius: "10px", maxWidth: "60%" }}
+                style={{ borderRadius: "10px", maxWidth: "60%" , minHeight: '200px'}}
               />
               <Card
                 style={{

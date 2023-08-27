@@ -23,7 +23,7 @@ const GameCard: FC<IGameCardProps> = ({ game }) => {
           },
         }}
       >
-        <CardMedia sx={{ width: "100%" }} component="img" image={game.thumbnail} />
+        <CardMedia sx={{ minWidth: "350px", minHeight: '200px' }} component="img" image={game.thumbnail} />
         <CardContent
           sx={{
             display: "flex",
