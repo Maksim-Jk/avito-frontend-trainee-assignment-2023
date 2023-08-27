@@ -8,17 +8,13 @@ export function updateGamesInLocalStorage(
     gameData: IGameById
   ) {
     if (gameData && gameArray && gameId) {
-      const updatedArray = gameArray.map((game) => {
-        if (game.data.id === +gameId) {
-          return { data: gameData, timestamp: Date.now() };
-        }
-        return game;
-      });
+      const updatedArray:ILocalStorageData[] = [...gameArray]
 
       if (!updatedArray.some((game) => game.data.id === +gameId)) {
         updatedArray.push({ data: gameData, timestamp: Date.now() });
+        console.log('gamePush');
+        
       }
-
       localStorage.setItem("openedGames", JSON.stringify(updatedArray));
     }
   }
