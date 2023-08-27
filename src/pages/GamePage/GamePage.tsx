@@ -36,12 +36,8 @@ const GamePage: FC = () => {
 
   useEffect(() => {
     if (!isLoading) {
-      if (openedGames.length === 0 && gameData) {
-        updateGamesInLocalStorage([{ data: gameData, timestamp: Date.now() }], gameId, gameData);
-      } else {
-        const data: IGameById | null = gameData ? gameData : cachedGameData;
-        data && updateGamesInLocalStorage(openedGames, gameId, data);
-      }
+      const data: IGameById | null = gameData ? gameData : cachedGameData;
+      data && updateGamesInLocalStorage(openedGames || [], gameId, data);
       setGameState(gameData || cachedGameData || undefined);
     }
   }, [gameData, cachedGameData]);
