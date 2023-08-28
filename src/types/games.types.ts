@@ -19,9 +19,9 @@ export interface IGame {
 }
 
 export interface IGameQuery {
-  platform?: string;
-  category?: string;
-  sortByby?: string;
+  platform: string | null;
+  category: string | null;
+  sortBy: string | null;
 }
 
 export interface IGameById {

@@ -5,41 +5,19 @@ import GameCard from "../../components/GameCard";
 import HomePageSceleton from "../../components/HomePageSkeleton";
 import { removeOldGamesInLocalStorage } from "../../utils/localStorageUtils";
 import { Alert, Stack } from "@mui/material";
-import { useNavigate, useSearchParams } from "react-router-dom";
 
 const HomePage: FC = () => {
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-
-const handleSelectChange = (param: string, value: string | null) => {
-  if (value != null && value !== '') {
-    searchParams.set(param, value);
-  } else {
-    searchParams.delete(param);
-  }
-  setSearchParams(searchParams);
-
-  // Обновляем URL
-  const newSearchParams = new URLSearchParams(searchParams.toString());
-  navigate(`?${newSearchParams.toString()}`);
-};
-
-  const { platform, category, 'sort-by': sortBy } = Object.fromEntries(searchParams.entries());
-
-
-  const { data, isFetching, isError, error } = useGetGamesQuery({
-    platform: platform || undefined,
-    category: category || undefined,
-    sortBy: sortBy || undefined,
-  });
-
+  const [platform, setPlatform] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const { isFetching, data, isError, error } = useGetGamesQuery({ platform, category, sortBy });
   
   interface IError {
     status: number;
     status_message: string;
   }
 
+  console.log(data);
   
   useEffect(() => {
     removeOldGamesInLocalStorage();
@@ -51,7 +29,7 @@ const handleSelectChange = (param: string, value: string | null) => {
         <h2>Games</h2>
         <div>
           <label>Platform:</label>
-          <select value={platform || ''} onChange={(e) => handleSelectChange('platform', e.target.value || null)}>
+          <select value={platform || ""} onChange={(e) => setPlatform(e.target.value || null)}>
             <option value="">All Platforms</option>
             <option value="pc">PC</option>
             <option value="browser">Browser</option>
@@ -60,7 +38,7 @@ const handleSelectChange = (param: string, value: string | null) => {
         <div>
 <div>
   <label>Category:</label>
-  <select value={category || ''} onChange={(e) => handleSelectChange('category', e.target.value || null)}>
+  <select value={category || ''} onChange={(e) => setCategory(e.target.value || null)}>
     <option value="">All Categories</option>
     <option value="mmorpg">MMORPG</option>
     <option value="shooter">Shooter</option>
@@ -113,7 +91,7 @@ const handleSelectChange = (param: string, value: string | null) => {
 
         <div>
           <label>Sort By:</label>
-          <select value={sortBy || ''} onChange={(e) => handleSelectChange('sort-by', e.target.value || null)}>
+          <select value={sortBy || ""} onChange={(e) => setSortBy(e.target.value || null)}>
             <option value="">Default</option>
             <option value="release-date">release-date</option>
             <option value="popularity">popularity</option>
