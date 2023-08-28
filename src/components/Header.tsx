@@ -1,20 +1,22 @@
-import { AppBar, Box, Button, Toolbar } from '@mui/material'
+import { AppBar, Box, Button, Card, Toolbar } from '@mui/material'
 import { useLocation, useNavigate } from 'react-router-dom';
+import GamesSelector from './GameSelectors/GamesSelector';
 
 const Header = () => {
   const navigate = useNavigate();
   const {pathname} = useLocation();
+  console.log('HEADER RENDER');
   
+
   return (
-    <Box boxShadow={'0px 4px 4px rgba(0, 0, 0, 0.25)'} sx={{ flexGrow: 1, borderRadius: '10px', overflow: 'hidden' }}>
-      <AppBar position="static">
-        <Toolbar>
+    <Card sx={{  borderRadius: '10px', padding: '10px', }}>
+        <Toolbar sx={{height: 'auto'}}>
+          {pathname !== '/game' &&  <GamesSelector/>}
           {pathname === '/game' && (
-          <Button onClick={() => navigate("/games")} color="inherit">Вернуться на главную</Button>
+          <Button onClick={() => navigate(-1)} color="inherit">Вернуться на главную</Button>
           )} 
         </Toolbar>
-      </AppBar>
-    </Box>
+    </Card>
   )
 }
 

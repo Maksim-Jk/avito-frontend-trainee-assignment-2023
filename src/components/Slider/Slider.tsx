@@ -23,14 +23,19 @@ interface ISliderProps {
 const Slider: FC<ISliderProps> = ({ slides, ...swiperProps }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [howManyErrors, setHowManyErrors] = useState(0);
   const [isError, setIsError] = useState(false);
+
+useEffect(() => {
+  howManyErrors === slides.length && setIsError(true);
+}, [howManyErrors])
 
   useEffect(() => {
     slides.forEach((image) => {
       const img = new Image();
       img.src = image.image;
       img.onload = () => setImagesLoaded(true);
-      img.onerror = () => setIsError(true);
+      img.onerror = () => setHowManyErrors(howManyErrors +1);
     });
   }, []);
 
@@ -63,7 +68,7 @@ const Slider: FC<ISliderProps> = ({ slides, ...swiperProps }) => {
               {slides.map((slide) => (
                 <SwiperSlide
                   key={slide.id}
-                  style={{ minHeight: "200px", display: "flex", alignItems: "center" }}
+                  style={{ minHeight: "200px", display: "flex", alignItems: "center", fontSize:'14px' }}
                 >
                   <img src={slide.image} alt="Не удалось получить изображение" />
                 </SwiperSlide>
@@ -83,7 +88,7 @@ const Slider: FC<ISliderProps> = ({ slides, ...swiperProps }) => {
                 <SwiperSlide key={slide.id}>
                   <img
                     src={slide.image}
-                    style={{ color: "--text.primary" }}
+                    style={{ fontSize:'14px', display: "flex",alignItems: "center" }}
                     alt="Не удалось получить изображение"
                   />
                 </SwiperSlide>
