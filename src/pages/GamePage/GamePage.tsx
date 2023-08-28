@@ -1,13 +1,12 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { useGetGameByIdQuery } from "../../store/api/games.api";
-import Button from "@mui/material/Button";
 import { IGameById } from "../../types/games.types";
-import { Card, CardMedia, Typography, CardContent, Box } from "@mui/material";
+import { Card, CardMedia, Typography, CardContent, Box, Alert } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { updateGamesInLocalStorage } from "../../utils/localStorageUtils";
 import { useLocalStorageGameData } from "../../hooks/useLocalStorageGameData";
 import Slider from "../../components/Slider/Slider";
+import SliderSkeleton from "../../components/Slider/SliderSkeleton";
 
 interface IError {
   status: number;
@@ -15,7 +14,6 @@ interface IError {
 }
 
 const GamePage: FC = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const gameId: string = searchParams.get("id") || "";
   const { openedGames, cachedGameData, shouldFetch } = useLocalStorageGameData(gameId);
@@ -32,13 +30,15 @@ const GamePage: FC = () => {
 
   const [gameState, setGameState] = useState(cachedGameData || gameData);
 
+
   useEffect(() => {
     if (!isLoading) {
-      const data: IGameById | null = gameData ? gameData : cachedGameData;
-      data && updateGamesInLocalStorage(openedGames || [], gameId, data);
+        const data: IGameById | null = gameData ? gameData : cachedGameData;
+        data && updateGamesInLocalStorage(openedGames, gameId, data);
       setGameState(gameData || cachedGameData || undefined);
     }
   }, [gameData, cachedGameData]);
+
 
   const isMinSysReqValid =
     gameState && gameState.minimum_system_requirements
@@ -48,11 +48,12 @@ const GamePage: FC = () => {
       : false;
 
   return (
-    <div>
-      <Button onClick={() => navigate("/")} variant="outlined">
-        Back
-      </Button>
-      {isError && `Произошла ошибка при получении данных (${(error as IError)?.status})`}
+    <Box mt={"20px"}>
+      {isError && (
+        <Alert severity="error" sx={{ borderRadius: "10px" }}>
+          Не удалось загрузить данные ({(error as IError)?.status})
+        </Alert>
+      )}
 
       {isLoading
         ? "-----Loading-----"
@@ -61,7 +62,7 @@ const GamePage: FC = () => {
               sx={{
                 fontFamily: "Arial, sans-serif",
                 display: "flex",
-                flexDirection: {  xs: "column-reverse", md: "row" },
+                flexDirection: { xs: "column-reverse", md: "row" },
                 gap: "20px",
                 alignItems: "start",
                 justifyContent: "space-between",
@@ -72,9 +73,9 @@ const GamePage: FC = () => {
                 sx={{
                   textAlign: "left",
                   display: "flex",
-                  flexDirection: { xs: 'column',md: "column" },
+                  flexDirection: { xs: "column", md: "column" },
                   borderRadius: "10px",
-                  width: { xs: '100%', md: '40%'},
+                  width: { xs: "100%", md: "40%" },
                   minWidth: "400px",
                 }}
               >
@@ -195,7 +196,7 @@ const GamePage: FC = () => {
               </Card>
             </Box>
           )}
-    </div>
+    </Box>
   );
 };
 

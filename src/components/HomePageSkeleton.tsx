@@ -3,7 +3,7 @@ import React from "react";
 
 const HomePageSceleton = () => {
   return (
-    <Box
+    <Card
       sx={{
         borderRadius: "10px",
         overflow: "hidden",
@@ -15,7 +15,7 @@ const HomePageSceleton = () => {
         },
       }}
     >
-      <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <Skeleton variant="rectangular" width={"100%"} height={198} />
         <CardContent
           sx={{
@@ -38,8 +38,8 @@ const HomePageSceleton = () => {
 
           </Box>
         </CardContent>
-      </Card>
-    </Box>
+      </Box>
+    </Card>
   );
 };
 

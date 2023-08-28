@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import './App.css'
 import Router from './router/Router'
 import Header from './components/Header'
 import { Container } from '@mui/material'
