@@ -27,8 +27,10 @@ const Slider: FC<ISliderProps> = ({ slides, ...swiperProps }) => {
   const [isError, setIsError] = useState(false);
 
 useEffect(() => {
-  howManyErrors === slides.length && setIsError(true);
+  howManyErrors >= slides.length && setIsError(true);
 }, [howManyErrors])
+
+console.log(isError, howManyErrors);
 
   useEffect(() => {
     slides.forEach((image) => {

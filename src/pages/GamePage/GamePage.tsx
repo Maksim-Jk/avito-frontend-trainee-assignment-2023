@@ -6,7 +6,6 @@ import { useSearchParams } from "react-router-dom";
 import { updateGamesInLocalStorage } from "../../utils/localStorageUtils";
 import { useLocalStorageGameData } from "../../hooks/useLocalStorageGameData";
 import Slider from "../../components/Slider/Slider";
-import SliderSkeleton from "../../components/Slider/SliderSkeleton";
 
 interface IError {
   status: number;

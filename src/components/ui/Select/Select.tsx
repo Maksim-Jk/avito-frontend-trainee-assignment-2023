@@ -14,15 +14,15 @@ const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get(initialType);
-  const [state, setState] = useState<string | null>(type);
+  const [state, setState] = useState<string>(type || '');
 
   console.log(type);
 
   useEffect(() => {
-    setState(type);
+    setState(type || '');
   }, [type]);
 
-  const handleSelectChange = (value: string | null) => {
+  const handleSelectChange = (value: string) => {
     if (value != null && value !== "") {
       searchParams.set(initialType, value);
     } else {
@@ -34,16 +34,6 @@ const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
     navigate(`?${searchParams.toString()}`);
   };
 
-  const WhiteBorderTextField = styled(MenuItem)`
-    & label.Mui-focused {
-      color: white;
-    }
-    & .MuiOutlinedInput-root {
-      &.Mui-focused fieldset {
-        border-color: white;
-      }
-    }
-  `;
 
   return (
     <Box sx={{ width: { xs: "100%", md: "25%" } }}>
@@ -77,8 +67,7 @@ const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
             }}
           displayEmpty={true}
           onChange={(e) => {
-            console.log("change");
-            handleSelectChange(e.target.value || null);
+            handleSelectChange(e.target.value || '');
           }}
         >
           {array.map((item) => (
