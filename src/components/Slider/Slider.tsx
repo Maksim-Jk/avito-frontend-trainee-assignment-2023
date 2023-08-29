@@ -30,8 +30,6 @@ useEffect(() => {
   howManyErrors >= slides.length && setIsError(true);
 }, [howManyErrors])
 
-console.log(isError, howManyErrors);
-
   useEffect(() => {
     slides.forEach((image) => {
       const img = new Image();

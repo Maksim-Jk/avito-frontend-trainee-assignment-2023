@@ -1,15 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { FetchArgs, createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { IGame, IGameById, IGameQuery } from "../../types/games.types";
 import { transformData } from "../../utils/transformData";
 
 const API_URL = "https://www.freetogame.com/api/";
 
+
 export const gamesApi = createApi({
   reducerPath: "gamesApi",
-  baseQuery: fetchBaseQuery({
+  baseQuery: retry(fetchBaseQuery({
     baseUrl: API_URL,
-  }),
-
+  }), {maxRetries : 3}
+  ),
   endpoints: (builder) => ({
     getGames: builder.query<IGame[], Partial<IGameQuery>>({
       query: ({ platform, category, sortBy }) => {
@@ -20,10 +21,8 @@ export const gamesApi = createApi({
           if (category) queryString += `category=${category}&`;
           if (sortBy) queryString += `sort-by=${sortBy}&`;
         }
-        console.log(queryString);
         return queryString;
       },
-      extraOptions: { maxRetries: 3 },
       transformResponse: (response: IGame[]) => {
         return response.map((item) => {
           item.release_date = transformData(item.release_date);
@@ -33,8 +32,6 @@ export const gamesApi = createApi({
     }),
     getGameById: builder.query<IGameById, string | number>({
       query: (id) => `game?id=${id}`,
-      extraOptions: { maxRetries: 3 },
-
       transformResponse: (response: IGameById) => {
         return { ...response, release_date: transformData(response.release_date) };
       },
