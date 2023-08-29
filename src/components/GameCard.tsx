@@ -8,6 +8,7 @@ interface IGameCardProps {
 }
 
 const GameCard: FC<IGameCardProps> = ({ game }) => {
+  
   const cardStyles = {
     borderRadius: "10px",
     overflow: "hidden",
@@ -51,7 +52,7 @@ const GameCard: FC<IGameCardProps> = ({ game }) => {
 
   return (
     <Card sx={cardStyles}>
-      <Link to={`/game?id=${game.id}`}>
+      <Link to={`/game?id=${game.id}`} state={'games'}>
         <Box sx={boxStyles}>
           <CardMedia sx={mediaStyles} component="img" image={game.thumbnail} />
           <CardContentStyled>

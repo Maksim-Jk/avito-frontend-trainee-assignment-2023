@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Typography, Select as MuiSelect, FormControl, MenuItem, styled } from "@mui/material";
 
 interface ISelectProps {
@@ -10,13 +10,10 @@ interface ISelectProps {
 }
 
 const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
+  const [searchParams] = useSearchParams();
   const type = searchParams.get(initialType);
   const [state, setState] = useState<string>(type || '');
-
-  console.log(type);
 
   useEffect(() => {
     setState(type || '');

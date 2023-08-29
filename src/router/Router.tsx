@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import HomePage from '../pages/HomePage/HomePage'
-import GamePage from '../pages/GamePage/GamePage'
+import HomePage from '../pages/HomePage'
+import GamePage from '../pages/GamePage'
 
 const Router = () => {
   return (
