@@ -47,7 +47,7 @@ const HomePage: FC = () => {
           </Alert>
         )}
         {!isFetching && !isError && data
-          ? data?.slice(0, 10).map((game: IGame) => <GameCard game={game} key={game.id} />)
+          ? data?.slice(0, 12).map((game: IGame) => <GameCard game={game} key={game.id} />)
           : !isError && Array.from({ length: 20 }, (_, i) => <HomePageSceleton key={i} />)}
       </Stack>
     </>

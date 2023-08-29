@@ -9,13 +9,13 @@ const Header = () => {
   
 
   return (
-    <Card sx={{  borderRadius: '10px', alignItems: 'center' }}>
-        <Toolbar sx={{display: 'flex',alignItems: 'center', height: '100%', padding: "10px 20px 20px"}}>
+    <Card component="header" sx={{  borderRadius: '10px', alignItems: 'center', marginTop: '20px'}}>
+        <Box sx={{display: 'flex',alignItems: 'center', height: '100%', padding: "20px"}}>
           {pathname !== '/game' &&  <GamesSelector/>}
           {pathname === '/game' && (
-          <Button onClick={() => navigate(-1)} color="inherit" sx={{ padding: '15px 20px', border: '1px solid #474747' }}>Вернуться на главную</Button>
+          <Button onClick={() => navigate(-1)} color="inherit" sx={{ padding: '15px 20px', border: '1px solid #474747', borderRadius: '10px' }}>Вернуться на главную</Button>
           )} 
-        </Toolbar>
+        </Box>
     </Card>
   )
 }
