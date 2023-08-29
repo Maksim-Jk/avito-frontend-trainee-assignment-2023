@@ -1,5 +1,5 @@
 export const categoryOptions = [
-    { value: "", label: "Все категории" },
+    { value: "Все категории", label: "Все категории" },
     { value: "mmorpg", label: "ММОРПГ" },
     { value: "shooter", label: "Шутер" },
     { value: "strategy", label: "Стратегия" },

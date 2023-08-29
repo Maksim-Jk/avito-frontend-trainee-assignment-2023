@@ -1,3 +1,4 @@
+import { MenuItem } from "@mui/material";
 import { FC } from "react";
 interface IOptionProps {
   value: string;
@@ -7,7 +8,7 @@ interface IOptionProps {
 
 
 const Option: FC<IOptionProps> = ({ value, children }) => {
-  return <option style={{padding: "10px", borderRadius: "200px"}} value={value}>{children}</option>;
+  return <MenuItem style={{padding: "10px"}} value={value}>{children}</MenuItem>;
 };
 
 export default Option;
