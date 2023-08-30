@@ -14,7 +14,6 @@ const CardContainer = styled(Card)({
   display: "flex",
   flexDirection: "column",
   borderRadius: "10px",
-  minWidth: "400px",
 });
 
 const GameTitleSkeleton = styled(Skeleton)({
