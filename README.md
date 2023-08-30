@@ -1,6 +1,8 @@
 # Avito-frontend-trainee-assignment-2023   
 [https://avito-frontend-trainee-assignment-2023.vercel.app/](https://avito-frontend-trainee-assignment-2023.vercel.app/ "Перейти на сайт")
 
+![image](https://github.com/Maksim-Jk/avito-frontend-trainee-assignment-2023/assets/131034634/a5b89f91-a8b7-487a-a62c-1b4aacbb3b07)
+
 ## Описание
 
 Проект "avito-frontend-trainee-assignment-2023" разработан в рамках отбора на стажировку в Avito Tech. Цель проекта - разработать интерфейс для сайта Free-To-Play Games, состоящий из двух страниц. Главная страница позволяет просматривать и фильтровать игры по платформе и жанру, а также сортировать их по различным параметрам. По клику на игру пользователь переходит на страницу с подробной информацией о ней.
