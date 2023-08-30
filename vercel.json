@@ -1,4 +1,7 @@
 {
-    "source": "/*",
-    "destination": "/games"
-  }
+  "rewrites": [{ "source": "/games", "destination": "/" }, 
+    {
+      "source": "/game?id=:id*",
+      "destination": "/game?id=:id"
+    }]
+}
