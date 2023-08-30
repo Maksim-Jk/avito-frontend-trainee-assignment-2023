@@ -1,15 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useGetGameByIdQuery } from "../store/api/games.api";
 import { IGameById } from "../types/games.types";
-import {
-  Card,
-  CardMedia,
-  Typography,
-  CardContent,
-  Box,
-  Alert,
-  styled,
-} from "@mui/material";
+import { Card, CardMedia, Typography, CardContent, Box, Alert, styled } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { updateGamesInLocalStorage } from "../utils/localStorageUtils";
 import { useLocalStorageGameData } from "../hooks/useLocalStorageGameData";
@@ -29,18 +21,26 @@ export const AlertStyled = styled(Alert)({
   width: "100%",
 });
 
-const BoxContainer = styled(Box)({
+const BoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "20px",
   alignItems: "start",
   justifyContent: "space-between",
-});
+  flexDirection: "column-reverse",
+  [theme.breakpoints.up("md")]: {
+    flexDirection: "row",
+  },
+}));
 
-const CardContainer = styled(Card)({
+const CardContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   borderRadius: "10px",
-});
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
+    width: "40%",
+  },
+}));
 
 const GameTitle = styled(Typography)({
   fontSize: "35px",
@@ -112,9 +112,9 @@ const GamePage: FC = () => {
       ) : (
         gameState && (
           <>
-            <BoxContainer sx={{ flexDirection: { xs: "column-reverse", md: "row" } }}>
+            <BoxContainer>
               <Slider slides={gameState.screenshots} />
-              <CardContainer sx={{ width: { xs: "100%", md: "40%" } }}>
+              <CardContainer>
                 <CardMedia component="img" image={gameState.thumbnail} alt={gameState.title} />
                 <CardContent>
                   <GameTitle variant="h1">

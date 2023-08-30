@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useGetGamesQuery } from "../store/api/games.api";
 import { IGame } from "../types/games.types";
 import GameCard from "../components/GameCard";
-import HomePageSceleton from "../components/HomePageSkeleton";
+import GameCardSkeleton from "../components/GameCardSkeleton";
 import { removeOldGamesInLocalStorage } from "../utils/localStorageUtils";
 import { Box, Stack, TablePagination, styled } from "@mui/material";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -57,6 +57,7 @@ const HomePage: FC = () => {
   }, [sortParams, paramsPage, paramsGamesPerPage]);
 
   const handleChangePage = (_: any, newPage: number) => {
+    window.scrollTo(0, 0);
     setPage(newPage);
     searchParams.set("page", String(newPage + 1));
     if (newPage !== null && newPage !== 0) {
@@ -64,7 +65,6 @@ const HomePage: FC = () => {
       searchParams.delete("page");
     }
     navigate(`?${searchParams.toString()}`);
-    window.scrollTo(0, 0); 
   };
 
   const handleChangeGamesPerPage = (
@@ -106,7 +106,7 @@ const HomePage: FC = () => {
             ))}
           </>
         ) : (
-          !isError && Array.from({ length: 20 }, (_, i) => <HomePageSceleton key={i} />)
+          !isError && Array.from({ length: 12 }, (_, i) => <GameCardSkeleton key={i} />)
         )}
       </GamesContainer>
       {data && data.length > 0 ? (

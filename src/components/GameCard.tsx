@@ -3,7 +3,7 @@ import { IGame } from "../types/games.types";
 import { Link } from "react-router-dom";
 import { Box, Card, CardContent, CardMedia, Skeleton, Typography, styled } from "@mui/material";
 
-const GameContainer = styled(Card)({
+export const GameContainer = styled(Card)(({ theme }) => ({
   borderRadius: "10px",
   overflow: "hidden",
   flex: "auto 1 auto",
@@ -11,15 +11,25 @@ const GameContainer = styled(Card)({
   "&:hover": {
     transform: "scale(1.02)",
   },
-});
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    width: "47.5%",
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "31.6%",
+  },
+  [theme.breakpoints.up("lg")]: {
+    width: "32%",
+  },
+}));
 
-const GameCardStyled = styled(Box)({
+export const GameCardStyled = styled(Box)({
   height: "100%",
   display: "flex",
   flexDirection: "column",
 });
 
-const CardContentStyled = styled(CardContent)({
+export const CardContentStyled = styled(CardContent)({
   "  &:last-child": {
     paddingBottom: "16px",
   },
@@ -30,7 +40,7 @@ const CardContentStyled = styled(CardContent)({
   height: "100%",
 });
 
-const GameCardData = styled(Box)({
+export const GameCardData = styled(Box)({
   alignSelf: "flex-end",
   display: "flex",
   flexWrap: "wrap",
@@ -55,7 +65,7 @@ const GameCard: FC<IGameCardProps> = ({ game }) => {
   }, []);
 
   return (
-    <GameContainer sx={{ width: { xs: "100%", sm: "47.5%", md: "31.6%", lg: "32%" } }}>
+    <GameContainer>
       <Link to={`/game?id=${game.id}`} state={"games"}>
         <GameCardStyled>
           <CardMedia
