@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Card, Typography, styled } from "@mui/material";
 
-const FooterContainer = styled(Card)({
+const FooterContainer = styled(Card)(({ theme }) => ({
   borderRadius: "10px",
   alignItems: "center",
   margin: "20px 0",
@@ -9,7 +9,12 @@ const FooterContainer = styled(Card)({
   display: "flex",
   justifyContent: "space-between",
   padding: "20px",
-}) as typeof Card;
+  gap: "5px",
+  flexDirection: "column",
+  [theme.breakpoints.up("sm")]: {
+    flexDirection: "row",
+  },
+})) as typeof Card;
 
 const Footer: FC = () => {
   return (

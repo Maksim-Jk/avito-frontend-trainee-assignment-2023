@@ -14,11 +14,11 @@ const darkTheme = createTheme({
 document.body.style.backgroundColor = darkTheme.palette.background.default;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <BrowserRouter>
-      <ThemeProvider theme={darkTheme}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ThemeProvider>
-    </BrowserRouter>
+  <BrowserRouter>
+    <ThemeProvider theme={darkTheme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
+  </BrowserRouter>
 );

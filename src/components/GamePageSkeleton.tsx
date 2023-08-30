@@ -2,19 +2,29 @@ import { FC } from "react";
 import { Card, CardContent, Box, styled, Skeleton } from "@mui/material";
 import SliderSkeleton from "./Slider/SliderSkeleton";
 
-const BoxContainer = styled(Box)({
+const BoxContainer = styled(Box)(({ theme }) => ({
   marginTop: "20px",
   display: "flex",
   gap: "20px",
   alignItems: "start",
   justifyContent: "space-between",
-});
+  [theme.breakpoints.up("xs")]: {
+    flexDirection: "column-reverse",
+  },
+  [theme.breakpoints.up("md")]: {
+    flexDirection: "row",
+  },
+}));
 
-const CardContainer = styled(Card)({
+const CardContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   borderRadius: "10px",
-});
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
+    width: "40%",
+  },
+}));
 
 const GameTitleSkeleton = styled(Skeleton)({
   height: "35px",
@@ -41,9 +51,9 @@ const TypographyTextSkeleton = styled(Skeleton)({
 
 const GamePageSkeleton: FC = () => {
   return (
-    <BoxContainer sx={{ flexDirection: { xs: "column-reverse", md: "row" } }}>
+    <BoxContainer>
       <SliderSkeleton />
-      <CardContainer sx={{ width: { xs: "100%", md: "40%" } }}>
+      <CardContainer>
         <Skeleton variant="rectangular" sx={{ paddingBottom: "56%", width: "100%" }} />
         <CardContent>
           <GameTitleSkeleton />

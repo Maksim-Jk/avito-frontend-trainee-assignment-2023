@@ -15,8 +15,8 @@ const App: FC = () => {
       }}
     >
       <Header />
-      <Box component="main" sx={{ flexGrow: 1 }} >
-      <Router />
+      <Box component="main" sx={{ flexGrow: 1 }}>
+        <Router />
       </Box>
       <Footer />
     </Container>

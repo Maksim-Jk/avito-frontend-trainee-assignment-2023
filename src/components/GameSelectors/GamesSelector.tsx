@@ -16,11 +16,15 @@ const SelectorBox = styled(Box)({
   marginTop: "-10px",
 });
 
-const ResetButton = styled(Button)({
-  padding: "10px",
+const ResetButton = styled(Button)(({ theme }) => ({
+  padding: "8.5px",
   border: "1px solid #474747",
   borderRadius: "10px",
-});
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
+    width: "15%",
+  },
+}));
 
 const GamesSelector: FC = () => {
   const navigate = useNavigate();
@@ -34,11 +38,7 @@ const GamesSelector: FC = () => {
       <Select label="Платформа" array={platformOptions} initialType="platform" />
       <Select label="Категория" array={categoryOptions} initialType="category" />
       <Select label="Сортировать" array={sortByOptions} initialType="sort-by" />
-      <ResetButton
-        color="inherit"
-        sx={{ width: { xs: "100%", md: "15%" } }}
-        onClick={handleClearChange}
-      >
+      <ResetButton color="inherit" onClick={handleClearChange}>
         Сбросить
       </ResetButton>
     </SelectorBox>

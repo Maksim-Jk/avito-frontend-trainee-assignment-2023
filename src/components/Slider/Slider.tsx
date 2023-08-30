@@ -16,12 +16,16 @@ interface ISliderProps {
   slides: IGameByIdScreenshot[];
 }
 
-export const SliderContainer = styled(Card)({
+export const SliderContainer = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   padding: "20px",
   borderRadius: "10px",
-});
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
+    width: "60%",
+  },
+}));
 
 const SwiperSlider = styled(Swiper)({
   "--swiper-navigation-color": "#fff",
@@ -63,7 +67,7 @@ const Slider: FC<ISliderProps> = ({ slides }) => {
   return (
     <>
       {imagesLoaded && slides.length > 0 && !isError ? (
-        <SliderContainer sx={{ width: { xs: "100%", md: "60%" } }}>
+        <SliderContainer>
           <Box>
             <SwiperSlider
               spaceBetween={10}
@@ -98,7 +102,7 @@ const Slider: FC<ISliderProps> = ({ slides }) => {
       ) : slides.length > 0 && !isError ? (
         <SliderSkeleton />
       ) : (
-        <SliderContainer sx={{ width: { xs: "100%", md: "60%" } }}>
+        <SliderContainer>
           <Typography variant="subtitle1" color="text.secondary">
             Скриншоты не найдены
           </Typography>

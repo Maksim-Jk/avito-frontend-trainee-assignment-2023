@@ -4,7 +4,7 @@ import { SliderContainer } from "./Slider";
 
 const SliderSkeleton: FC = () => {
   return (
-    <SliderContainer sx={{ width: { xs: "100%", md: "60%" }}}>
+    <SliderContainer>
       <Skeleton
         variant="rectangular"
         sx={{
@@ -13,7 +13,7 @@ const SliderSkeleton: FC = () => {
           borderRadius: "10px",
         }}
       ></Skeleton>
-      <Box sx={{ display: "flex", gap: "10px", marginTop: '10px'  }}>
+      <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
         {Array.from({ length: 4 }, (_, i) => (
           <Skeleton
             key={i}
