@@ -1,15 +1,14 @@
 import { FC, useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Typography, Select as MuiSelect, FormControl, MenuItem, styled } from "@mui/material";
+import {  useNavigate, useSearchParams } from "react-router-dom";
+import { Box, Typography, Select as MuiSelect, FormControl, MenuItem } from "@mui/material";
 
 interface ISelectProps {
   label: string;
   array: { value: string; label: string }[];
   initialType: string;
-  clear: any;
 }
 
-const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
+const Select: FC<ISelectProps> = ({ label, array, initialType }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get(initialType);

@@ -9,7 +9,6 @@ import {
   Box,
   Alert,
   styled,
-  Skeleton,
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { updateGamesInLocalStorage } from "../utils/localStorageUtils";
@@ -97,7 +96,6 @@ const GamePage: FC = () => {
 
   const isMinSysReqValid = gameState && validateObject(gameState, "minimum_system_requirements");
 
-  const [imageLoaded, setImagesLoaded] = useState(false);
   return (
     <Box>
       {isError && (

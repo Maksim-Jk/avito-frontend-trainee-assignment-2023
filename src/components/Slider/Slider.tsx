@@ -12,15 +12,14 @@ import "./swiperStyles.css";
 // import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { IGameByIdScreenshot } from "../../types/games.types";
-import { Alert, Box, Card, Typography } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import SliderSkeleton from "./SliderSkeleton";
 
 interface ISliderProps {
   slides: IGameByIdScreenshot[];
-  [key: string]: any;
 }
 
-const Slider: FC<ISliderProps> = ({ slides, ...swiperProps }) => {
+const Slider: FC<ISliderProps> = ({ slides }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [howManyErrors, setHowManyErrors] = useState(0);

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import Router from "./router/Router";
 import Header from "./components/Header";
 import { Box, Container } from "@mui/material";

@@ -4,8 +4,8 @@ import { IGame } from "../types/games.types";
 import GameCard from "../components/GameCard";
 import HomePageSceleton from "../components/HomePageSkeleton";
 import { removeOldGamesInLocalStorage } from "../utils/localStorageUtils";
-import { Alert, Box, Stack, TablePagination, styled } from "@mui/material";
-import { ScrollRestoration, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {  Box, Stack, TablePagination, styled } from "@mui/material";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { AlertStyled } from "./GamePage";
 
 interface IError {
@@ -50,7 +50,7 @@ const HomePage: FC = () => {
     }
   }, [sortParams, paramsPage, paramsGamesPerPage]);
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_:any, newPage: number) => {
     setPage(newPage);
     if (newPage !== null && newPage !== 0) {
       searchParams.set("page", String(newPage + 1));

@@ -1,17 +1,3 @@
-import { IGameById } from "../types/games.types";
-
-// export const isObjectValid = (gameState: IGameById): boolean => {
-//   const isValid: boolean =
-//     gameState && gameState.minimum_system_requirements
-//       ? Boolean(
-//           Object.values(gameState.minimum_system_requirements).every(
-//             (value) => value !== null && value !== undefined
-//           )
-//         )
-//       : false;
-//   return isValid;
-// };
-
 export const validateObject = (obj: Record<string, any>, key?: string): boolean => {
   if (!key) {
       let isValid = false;

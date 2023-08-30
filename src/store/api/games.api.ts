@@ -1,4 +1,4 @@
-import { FetchArgs, createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { IGame, IGameById, IGameQuery } from "../../types/games.types";
 import { transformData } from "../../utils/transformData";
 

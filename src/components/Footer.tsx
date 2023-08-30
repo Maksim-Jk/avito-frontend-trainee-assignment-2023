@@ -1,6 +1,4 @@
-import { Box, Button, Card, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { To, useLocation, useNavigate } from "react-router-dom";
+import { Box, Card, Typography } from "@mui/material";
 
 const Footer = () => {
   return (

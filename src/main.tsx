@@ -12,24 +12,11 @@ const darkTheme = createTheme({
   },
 
 });
-const lightTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#fff",
-    },
-    mode: "light",
-  },
-});
-
-
-const theme = darkTheme;
-
-document.body.style.backgroundColor = theme.palette.background.default;
-
+document.body.style.backgroundColor = darkTheme.palette.background.default;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={darkTheme}>
         <Provider store={store}>
           <App />
         </Provider>
