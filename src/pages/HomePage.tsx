@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState } from "react";
 import { useGetGamesQuery } from "../store/api/games.api";
 import { IGame } from "../types/games.types";
 import GameCard from "../components/GameCard";
@@ -45,8 +45,6 @@ const HomePage: FC = () => {
   const [gamesPerPage, setGamesPerPage] = useState(initGamesPerPage);
   const dataFrom = page * gamesPerPage;
   const dataTo = dataFrom + gamesPerPage;
-
-  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (state === "clear") {
