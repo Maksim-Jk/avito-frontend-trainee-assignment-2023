@@ -3,8 +3,6 @@
 @import url("@fontsource/roboto/500.css");
 @import url("@fontsource/roboto/700.css");
 
-
-/*Обнуление*/
 * {
   padding: 0;
   margin: 0;
@@ -64,7 +62,7 @@ button::-moz-focus-inner {
 a,
 a:visited {
   text-decoration: none;
-  color: '--text.primary';
+  color: "--text.primary";
 }
 a:hover {
   text-decoration: none;
@@ -85,4 +83,3 @@ h6 {
   font-size: inherit;
   font-weight: 400;
 }
-/*--------------------*/

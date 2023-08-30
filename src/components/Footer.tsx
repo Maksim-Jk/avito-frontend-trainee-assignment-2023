@@ -1,27 +1,25 @@
-import { Box, Card, Typography } from "@mui/material";
+import { FC } from "react";
+import { Card, Typography, styled } from "@mui/material";
 
-const Footer = () => {
+const FooterContainer = styled(Card)({
+  borderRadius: "10px",
+  alignItems: "center",
+  margin: "20px 0",
+  overflow: "visible",
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "20px",
+}) as typeof Card;
+
+const Footer: FC = () => {
   return (
-    <Card
-      component="footer"
-      sx={{ borderRadius: "10px", alignItems: "center", margin: "20px 0", overflow: "visible" }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "100%",
-          padding: "20px",
-        }}
-      >
-        <Typography>2023</Typography>
-        <Typography>frontend-trainee-assignment-2023</Typography>
-        <a target="_blank" href="https://github.com/Maksim-Jk/avito-frontend-trainee-assignment-2023">
-          <Typography color="text.primary">Github</Typography>
-        </a>
-      </Box>
-    </Card>
+    <FooterContainer component="footer">
+      <Typography>2023</Typography>
+      <Typography>frontend-trainee-assignment-2023</Typography>
+      <a target="_blank" href="https://github.com/Maksim-Jk/avito-frontend-trainee-assignment-2023">
+        <Typography color="text.primary">Github</Typography>
+      </a>
+    </FooterContainer>
   );
 };
 export default Footer;

@@ -10,9 +10,8 @@
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-border-radius: 10px;
-overflow: hidden;
-  /* Center slide text vertically */
+  border-radius: 10px;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;

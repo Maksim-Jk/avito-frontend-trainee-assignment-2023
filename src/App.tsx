@@ -1,8 +1,8 @@
 import { FC } from "react";
 import Router from "./router/Router";
 import Header from "./components/Header";
-import { Box, Container } from "@mui/material";
 import Footer from "./components/Footer";
+import { Box, Container } from "@mui/material";
 
 const App: FC = () => {
   return (
