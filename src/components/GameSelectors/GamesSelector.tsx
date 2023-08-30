@@ -1,9 +1,9 @@
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { categoryOptions, platformOptions, sortByOptions } from "./GameSelector.data";
-import Select from "../ui/Select/Select";
 import { Box, Button } from "@mui/material";
-import { FC } from "react";
 import { styled } from "@mui/system";
+import Select from "../ui/Select/Select";
 
 const SelectorBox = styled(Box)({
   width: "100%",

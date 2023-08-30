@@ -1,23 +1,45 @@
 import { FC, useEffect, useState } from "react";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "./swiperStyles.css";
 
-// import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { IGameByIdScreenshot } from "../../types/games.types";
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Card, Typography, styled } from "@mui/material";
 import SliderSkeleton from "./SliderSkeleton";
 
 interface ISliderProps {
   slides: IGameByIdScreenshot[];
 }
+
+export const SliderContainer = styled(Card)({
+  display: "flex",
+  flexDirection: "column",
+  padding: "20px",
+  borderRadius: "10px",
+});
+
+const SwiperSlider = styled(Swiper)({
+  "--swiper-navigation-color": "#fff",
+  "--swiper-pagination-color": "#fff",
+});
+
+const SwiperSlideStyled = styled(SwiperSlide)({
+  minHeight: "200px",
+  display: "flex",
+  alignItems: "center",
+  fontSize: "14px",
+});
+
+const SwiperSlideStyledMini = styled(SwiperSlide)({
+  display: "flex",
+  alignItems: "center",
+  fontSize: "14px",
+});
 
 const Slider: FC<ISliderProps> = ({ slides }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -25,41 +47,25 @@ const Slider: FC<ISliderProps> = ({ slides }) => {
   const [howManyErrors, setHowManyErrors] = useState(0);
   const [isError, setIsError] = useState(false);
 
-useEffect(() => {
-  howManyErrors >= slides.length && setIsError(true);
-}, [howManyErrors])
+  useEffect(() => {
+    howManyErrors >= slides.length && setIsError(true);
+  }, [howManyErrors]);
 
   useEffect(() => {
     slides.forEach((image) => {
       const img = new Image();
       img.src = image.image;
       img.onload = () => setImagesLoaded(true);
-      img.onerror = () => setHowManyErrors((prev)=> prev +1);      
+      img.onerror = () => setHowManyErrors((prev) => prev + 1);
     });
   }, []);
 
-
-  
   return (
     <>
       {imagesLoaded && slides.length > 0 && !isError ? (
-        <Card
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: { xs: "100%", md: "60%" },
-            padding: "20px",
-            borderRadius: "10px",
-          }}
-        >
+        <SliderContainer sx={{ width: { xs: "100%", md: "60%" } }}>
           <Box>
-            <Swiper
-              style={
-                {
-                  "--swiper-navigation-color": "#fff",
-                  "--swiper-pagination-color": "#fff",
-                } as React.CSSProperties
-              }
+            <SwiperSlider
               spaceBetween={10}
               navigation={true}
               thumbs={{ swiper: thumbsSwiper }}
@@ -67,16 +73,12 @@ useEffect(() => {
               className="mySwiper2"
             >
               {slides.map((slide) => (
-                <SwiperSlide
-                  key={slide.id}
-                  style={{ minHeight: "200px", display: "flex", alignItems: "center", fontSize:'14px' }}
-                >
+                <SwiperSlideStyled key={slide.id}>
                   <img src={slide.image} alt="Не удалось получить изображение" />
-                </SwiperSlide>
+                </SwiperSlideStyled>
               ))}
-            </Swiper>
-
-            <Swiper
+            </SwiperSlider>
+            <SwiperSlider
               onSwiper={(e: any) => setThumbsSwiper(e)}
               spaceBetween={10}
               slidesPerView={4}
@@ -86,33 +88,21 @@ useEffect(() => {
               className="mySwiper"
             >
               {slides.map((slide) => (
-                <SwiperSlide key={slide.id}>
-                  <img
-                    src={slide.image}
-                    style={{ fontSize:'14px', display: "flex",alignItems: "center" }}
-                    alt="Не удалось получить изображение"
-                  />
-                </SwiperSlide>
+                <SwiperSlideStyledMini key={slide.id}>
+                  <img src={slide.image} alt="Не удалось получить изображение" />
+                </SwiperSlideStyledMini>
               ))}
-            </Swiper>
+            </SwiperSlider>
           </Box>
-        </Card>
+        </SliderContainer>
       ) : slides.length > 0 && !isError ? (
         <SliderSkeleton />
       ) : (
-        <Card
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: { xs: "100%", md: "60%" },
-          padding: "20px",
-          borderRadius: "10px",
-        }}
-      >
-        <Typography variant="subtitle1" color="text.secondary">
-          Скриншоты не найдены
-        </Typography>
-        </Card>
+        <SliderContainer sx={{ width: { xs: "100%", md: "60%" } }}>
+          <Typography variant="subtitle1" color="text.secondary">
+            Скриншоты не найдены
+          </Typography>
+        </SliderContainer>
       )}
     </>
   );

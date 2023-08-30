@@ -4,16 +4,18 @@ import { transformData } from "../../utils/transformData";
 
 const API_URL = "https://free-to-play-games-database.p.rapidapi.com/api/";
 const API_HEADERS = {
-  'X-RapidAPI-Key': 'a27719d883msh123a8e1f7666d4cp119590jsn30415a721b08',
-  'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
-}
+  "X-RapidAPI-Key": "a27719d883msh123a8e1f7666d4cp119590jsn30415a721b08",
+  "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
+};
 
 export const gamesApi = createApi({
   reducerPath: "gamesApi",
-  baseQuery: retry(fetchBaseQuery({
-    baseUrl: API_URL,
-    headers: API_HEADERS
-  }), {maxRetries : 3}
+  baseQuery: retry(
+    fetchBaseQuery({
+      baseUrl: API_URL,
+      headers: API_HEADERS,
+    }),
+    { maxRetries: 3 }
   ),
   endpoints: (builder) => ({
     getGames: builder.query<IGame[], Partial<IGameQuery>>({
@@ -28,10 +30,14 @@ export const gamesApi = createApi({
         return queryString;
       },
       transformResponse: (response: IGame[]) => {
-        return response.map((item) => {
-          item.release_date = transformData(item.release_date);
-          return item;
-        });
+        if (Array.isArray(response)) {
+          return response.map((item) => {
+            item.release_date = transformData(item.release_date);
+            return item;
+          });
+        } else {
+          return [];
+        }
       },
     }),
     getGameById: builder.query<IGameById, string | number>({

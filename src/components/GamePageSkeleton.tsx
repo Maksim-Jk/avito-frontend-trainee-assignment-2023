@@ -44,7 +44,7 @@ const GamePageSkeleton: FC = () => {
     <BoxContainer sx={{ flexDirection: { xs: "column-reverse", md: "row" } }}>
       <SliderSkeleton />
       <CardContainer sx={{ width: { xs: "100%", md: "40%" } }}>
-        <Skeleton variant="rectangular" width={"100%"} sx={{ paddingBottom: "56%" }} />
+        <Skeleton variant="rectangular" sx={{ paddingBottom: "56%", width: "100%" }} />
         <CardContent>
           <GameTitleSkeleton />
           <Box>

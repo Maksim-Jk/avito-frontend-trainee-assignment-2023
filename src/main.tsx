@@ -10,7 +10,6 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
-
 });
 document.body.style.backgroundColor = darkTheme.palette.background.default;
 

@@ -1,14 +1,14 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import { useGetGamesQuery } from "../store/api/games.api";
 import { IGame } from "../types/games.types";
 import GameCard from "../components/GameCard";
 import HomePageSceleton from "../components/HomePageSkeleton";
 import { removeOldGamesInLocalStorage } from "../utils/localStorageUtils";
-import {  Box, Stack, TablePagination, styled } from "@mui/material";
+import { Box, Stack, TablePagination, styled } from "@mui/material";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { AlertStyled } from "./GamePage";
 
-interface IError {
+export interface IGamesPageError {
   status: number;
   status_message: string;
 }
@@ -22,23 +22,31 @@ const GamesContainer = styled(Stack)({
   width: "100%",
 });
 
-const HomePage: FC = () => {
-  const [searchParams] = useSearchParams();
-  const { platform, category, "sort-by": sortBy } = Object.fromEntries(searchParams.entries());
-  const paramsPage: string | null = searchParams.get("page");
-  const paramsGamesPerPage: string | null = searchParams.get("games-per-page");
-  const sortParams = platform + category + sortBy;
+const PageContainer = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
 
+const HomePage: FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log(state);
 
+  const [searchParams] = useSearchParams();
+  const { platform, category, "sort-by": sortBy } = Object.fromEntries(searchParams.entries());
+  const sortParams = platform + category + sortBy;
+
+  const paramsPage: string | null = searchParams.get("page");
   const initPage = paramsPage ? +paramsPage - 1 : 0;
+  const paramsGamesPerPage: string | null = searchParams.get("games-per-page");
   const initGamesPerPage = paramsGamesPerPage ? +paramsGamesPerPage : 12;
+
   const [page, setPage] = useState(initPage);
   const [gamesPerPage, setGamesPerPage] = useState(initGamesPerPage);
   const dataFrom = page * gamesPerPage;
   const dataTo = dataFrom + gamesPerPage;
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (state === "clear") {
@@ -50,14 +58,15 @@ const HomePage: FC = () => {
     }
   }, [sortParams, paramsPage, paramsGamesPerPage]);
 
-  const handleChangePage = (_:any, newPage: number) => {
+  const handleChangePage = (_: any, newPage: number) => {
     setPage(newPage);
+    searchParams.set("page", String(newPage + 1));
     if (newPage !== null && newPage !== 0) {
-      searchParams.set("page", String(newPage + 1));
     } else {
       searchParams.delete("page");
     }
     navigate(`?${searchParams.toString()}`);
+    window.scrollTo(0, 0); 
   };
 
   const handleChangeGamesPerPage = (
@@ -85,11 +94,11 @@ const HomePage: FC = () => {
   }, []);
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1}}>
+    <PageContainer>
       <GamesContainer>
         {isError && (
           <AlertStyled severity="error">
-            Не удалось загрузить данные ({(error as IError)?.status})
+            Не удалось загрузить данные ({(error as IGamesPageError)?.status_message})
           </AlertStyled>
         )}
         {!isFetching && !isError && data ? (
@@ -114,12 +123,10 @@ const HomePage: FC = () => {
           onRowsPerPageChange={handleChangeGamesPerPage}
           rowsPerPage={gamesPerPage}
         />
-      ): (
-        <AlertStyled severity="error">
-        Игры не найдены
-      </AlertStyled>
+      ) : (
+        <AlertStyled severity="error">Игры по данному запросу не найдены</AlertStyled>
       )}
-    </Box>
+    </PageContainer>
   );
 };
 

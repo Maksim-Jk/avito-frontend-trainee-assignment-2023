@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { Box, Card, CardContent, Skeleton } from "@mui/material";
 
-const HomePageSceleton = () => {
+const HomePageSceleton: FC = () => {
   return (
     <Card
       sx={{
