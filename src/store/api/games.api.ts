@@ -1,30 +1,42 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IGame, IGameQuery } from "../../types/games.types";
+import { FetchArgs, createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import { IGame, IGameById, IGameQuery } from "../../types/games.types";
+import { transformData } from "../../utils/transformData";
 
 const API_URL = "https://www.freetogame.com/api/";
 
+
 export const gamesApi = createApi({
   reducerPath: "gamesApi",
-  baseQuery: fetchBaseQuery({
+  baseQuery: retry(fetchBaseQuery({
     baseUrl: API_URL,
-  }),
+  }), {maxRetries : 3}
+  ),
   endpoints: (builder) => ({
-    getGames: builder.query<IGame[], any>({
-      query: () => "games",
-      extraOptions: { maxRetries: 3 },
+    getGames: builder.query<IGame[], Partial<IGameQuery>>({
+      query: ({ platform, category, sortBy }) => {
+        let queryString = "/games";
+        if (platform || category || sortBy) {
+          queryString += "?";
+          if (platform) queryString += `platform=${platform}&`;
+          if (category) queryString += `category=${category}&`;
+          if (sortBy) queryString += `sort-by=${sortBy}&`;
+        }
+        return queryString;
+      },
+      transformResponse: (response: IGame[]) => {
+        return response.map((item) => {
+          item.release_date = transformData(item.release_date);
+          return item;
+        });
+      },
     }),
-    getGamesSorted: builder.query<IGame[], IGameQuery>({
-      query: ({ platform, category, sortByby }) =>
-        `games?${platform && `platform=${platform}`}${category && `&category=${category}`} ${
-          sortByby && `&sort-by${sortByby}`
-        }`,
-      extraOptions: { maxRetries: 3 },
-    }),
-    getGameById: builder.query<IGame[], number>({
+    getGameById: builder.query<IGameById, string | number>({
       query: (id) => `game?id=${id}`,
-      extraOptions: { maxRetries: 3 },
+      transformResponse: (response: IGameById) => {
+        return { ...response, release_date: transformData(response.release_date) };
+      },
     }),
   }),
 });
 
-export const { useGetGamesQuery, useGetGamesSortedQuery, useGetGameByIdQuery } = gamesApi;
+export const { useGetGamesQuery, useGetGameByIdQuery } = gamesApi;
