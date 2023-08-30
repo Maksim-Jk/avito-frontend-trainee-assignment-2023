@@ -1,7 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { useGetGameByIdQuery } from "../store/api/games.api";
 import { IGameById } from "../types/games.types";
-import { Card, CardMedia, Typography, CardContent, Box, Alert, styled } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  Typography,
+  CardContent,
+  Box,
+  Alert,
+  styled,
+  Skeleton,
+} from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { updateGamesInLocalStorage } from "../utils/localStorageUtils";
 import { useLocalStorageGameData } from "../hooks/useLocalStorageGameData";
@@ -22,7 +31,6 @@ export const AlertStyled = styled(Alert)({
 });
 
 const BoxContainer = styled(Box)({
-  marginTop: "20px",
   display: "flex",
   gap: "20px",
   alignItems: "start",
@@ -68,7 +76,6 @@ const GamePage: FC = () => {
   const gameId: string = searchParams.get("id") || "";
   const { openedGames, cachedGameData, shouldFetch } = useLocalStorageGameData(gameId);
   const notFoundMessage = "Данные не найдены";
-
   const {
     data: gameData,
     isLoading,
@@ -90,11 +97,16 @@ const GamePage: FC = () => {
 
   const isMinSysReqValid = gameState && validateObject(gameState, "minimum_system_requirements");
 
+  const [imageLoaded, setImagesLoaded] = useState(false);
   return (
-    <>
+    <Box>
       {isError && (
         <AlertStyled severity="error">
-          Не удалось загрузить данные ({(error as IGameError)?.data.status_message})
+          Не удалось загрузить данные (
+          {(error as IGameError)?.data?.status_message
+            ? (error as IGameError)?.data?.status_message
+            : ""}
+          )
         </AlertStyled>
       )}
 
@@ -153,7 +165,7 @@ const GamePage: FC = () => {
           </>
         )
       )}
-    </>
+    </Box>
   );
 };
 

@@ -8,14 +8,14 @@ const Header = () => {
   const navigateTo = state === "games" ? -1 : "/games";
 
   return (
-    <Card component="header" sx={{ borderRadius: "10px", alignItems: "center", margin: "20px 0" }}>
+    <Card component="header" sx={{ borderRadius: "10px", alignItems: "center", margin: "20px 0", overflow: "visible" }}>
       <Box sx={{ display: "flex", alignItems: "center", height: "100%", padding: "20px" }}>
         {pathname !== "/game" && <GamesSelector />}
         {pathname === "/game" && (
           <Button
             onClick={() => navigate(navigateTo as To)}
             color="inherit"
-            sx={{ padding: "15px 20px", border: "1px solid #474747", borderRadius: "10px" }}
+            sx={{ padding: "10px", border: "1px solid #474747", borderRadius: "10px" }}
           >
             Вернуться на главную
           </Button>

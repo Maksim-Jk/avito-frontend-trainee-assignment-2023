@@ -64,6 +64,7 @@ button::-moz-focus-inner {
 a,
 a:visited {
   text-decoration: none;
+  color: '--text.primary';
 }
 a:hover {
   text-decoration: none;

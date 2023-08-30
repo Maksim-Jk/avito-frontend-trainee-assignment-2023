@@ -13,10 +13,10 @@ const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get(initialType);
-  const [state, setState] = useState<string>(type || '');
+  const [state, setState] = useState<string>(type || "");
 
   useEffect(() => {
-    setState(type || '');
+    setState(type || "");
   }, [type]);
 
   const handleSelectChange = (value: string) => {
@@ -31,7 +31,6 @@ const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
     navigate(`?${searchParams.toString()}`);
   };
 
-
   return (
     <Box sx={{ width: { xs: "100%", md: "25%" } }}>
       <FormControl
@@ -43,28 +42,30 @@ const Select: FC<ISelectProps> = ({ label, array, initialType, clear }) => {
         <MuiSelect
           sx={{
             borderRadius: "10px",
-            height: "50px",
+            height: "40px",
             padding: "0px",
             "& .MuiOutlinedInput": { color: "red" },
             "&.MuiOutlinedInput-root": {
               "&.Mui-focused fieldset": {
-                border: '2px solid #fff',
+                border: "2px solid #fff",
               },
             },
           }}
           placeholder={label}
           value={state}
           renderValue={(value) => (
-            <Typography>{array.find((item) => item.value === value)?.label || array[0].label}</Typography>
+            <Typography >
+              {array.find((item) => item.value === value)?.label || array[0].label}
+            </Typography>
           )}
           MenuProps={{
             style: {
-               maxHeight: 400,
-                  },
-            }}
+              maxHeight: 400,
+            },
+          }}
           displayEmpty={true}
           onChange={(e) => {
-            handleSelectChange(e.target.value || '');
+            handleSelectChange(e.target.value || "");
           }}
         >
           {array.map((item) => (

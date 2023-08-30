@@ -35,10 +35,12 @@ useEffect(() => {
       const img = new Image();
       img.src = image.image;
       img.onload = () => setImagesLoaded(true);
-      img.onerror = () => setHowManyErrors(howManyErrors +1);
+      img.onerror = () => setHowManyErrors((prev)=> prev +1);      
     });
   }, []);
 
+
+  
   return (
     <>
       {imagesLoaded && slides.length > 0 && !isError ? (

@@ -10,7 +10,7 @@ const GamesSelector = () => {
 
   const handleClearChange = () => {
     setClearCounter(clearCounter + 1);
-    navigate(`/games`);
+    navigate(`/games`, {state:'clear'});
   }
 
   return (
@@ -18,7 +18,7 @@ const GamesSelector = () => {
       <Select label="Платформа" array={platformOptions} initialType="platform" clear={clearCounter}/>
       <Select label="Категория" array={categoryOptions} initialType="category"clear={clearCounter} />
       <Select label="Сортировать" array={sortByOptions} initialType="sort-by" clear={clearCounter}/>
-      <Button color="inherit" onClick={handleClearChange} sx={{ width:{xs: "100%", md: "15%"}, padding: '15px', border: '1px solid #474747', borderRadius: '10px' }}>Сбросить</Button>
+      <Button color="inherit" onClick={handleClearChange} sx={{ width:{xs: "100%", md: "15%"}, padding: '10px', border: '1px solid #474747', borderRadius: '10px' }}>Сбросить</Button>
     </Box>
   );
 };
