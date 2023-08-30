@@ -1,0 +1,7 @@
+{
+    "rewrites":  [
+      {"source": "/games(.*)", "destination": "/games"},
+      {"source": "/game?id=(.*)", "destination": "/game?id="},
+      {"source": "/(.*)", "destination": "/games"}
+    ]
+  }
