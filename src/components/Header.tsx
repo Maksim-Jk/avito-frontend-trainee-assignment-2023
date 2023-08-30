@@ -8,7 +8,7 @@ const Header = () => {
   const navigateTo = state === "games" ? -1 : "/games";
 
   return (
-    <Card component="header" sx={{ borderRadius: "10px", alignItems: "center", marginTop: "20px" }}>
+    <Card component="header" sx={{ borderRadius: "10px", alignItems: "center", margin: "20px 0" }}>
       <Box sx={{ display: "flex", alignItems: "center", height: "100%", padding: "20px" }}>
         {pathname !== "/game" && <GamesSelector />}
         {pathname === "/game" && (

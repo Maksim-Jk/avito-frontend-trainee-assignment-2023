@@ -16,10 +16,9 @@ interface IGameError {
   };
 }
 
-const AlertStyled = styled(Alert)({
+export const AlertStyled = styled(Alert)({
   borderRadius: "10px",
   width: "100%",
-  marginTop: "20px",
 });
 
 const BoxContainer = styled(Box)({

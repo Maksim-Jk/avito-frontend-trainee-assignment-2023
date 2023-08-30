@@ -16,7 +16,7 @@ const HomePageSceleton = () => {
       }}
     >
       <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <Skeleton variant="rectangular" width={"100%"} height={198} />
+        <Skeleton variant="rectangular" width={"100%"} sx={{ paddingBottom: "56%"}} />
         <CardContent
           sx={{
             display: "flex",
