@@ -122,17 +122,17 @@ const GamePage: FC = () => {
                   </GameTitle>
                   <Box>
                     <TypographyTitle component="h2">Данные о релизе</TypographyTitle>
-                    <TypographyText variant="subtitle1" color="text.secondary">
+                    <TypographyText component="p" variant="subtitle1" color="text.secondary">
                       Дата релиза:{" "}
                       {gameState.release_date ? gameState.release_date : notFoundMessage}
                     </TypographyText>
-                    <TypographyText variant="subtitle1" color="text.secondary">
+                    <TypographyText component="p" variant="subtitle1" color="text.secondary">
                       Издатель: {gameState.publisher ? gameState.publisher : notFoundMessage}
                     </TypographyText>
-                    <TypographyText variant="subtitle1" color="text.secondary">
+                    <TypographyText component="p" variant="subtitle1" color="text.secondary">
                       Разработчик: {gameState.developer ? gameState.developer : notFoundMessage}
                     </TypographyText>
-                    <TypographyText variant="subtitle1" color="text.secondary">
+                    <TypographyText component="p" variant="subtitle1" color="text.secondary">
                       Жанр: {gameState.genre ? gameState.genre : notFoundMessage}
                     </TypographyText>
                   </Box>
@@ -145,7 +145,7 @@ const GamePage: FC = () => {
                           <TypographySubTitle color="text.primary" variant="h3">
                             {systamMap[key]}
                           </TypographySubTitle>
-                          <TypographyText variant="subtitle1" color="text.secondary">
+                          <TypographyText component="p" variant="subtitle1" color="text.secondary">
                             {value.length > 2 ? value : notFoundMessage}
                           </TypographyText>
                         </Box>
